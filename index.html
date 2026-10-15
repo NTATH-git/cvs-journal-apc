@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心臓血管外科領域 雑誌APC・画像枠 総合一覧（ver013）</title>
+<style>
+  :root{--navy:#1f4e78;--navy2:#2e6da4;--green:#c6efce;--greent:#0a6b2e;--blue:#ddebf7;--gray:#f2f2f2;--warn:#ffc7ce;--warnt:#9c0006;--gold:#fff2cc;--teal:#0f766e;--teal2:#14a08c;}
+  *{box-sizing:border-box;}
+  body{font-family:"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;margin:0;color:#222;background:#fafbfc;line-height:1.5;}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:22px 26px;}
+  header h1{margin:0 0 6px;font-size:20px;}
+  header .sub{font-size:12.5px;opacity:.9;}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px;}
+  .badges span{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:3px 11px;border-radius:20px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);}
+  .badges .ver{background:#fff;color:var(--navy);}
+  .tabs{display:flex;gap:0;background:#fff;border-bottom:2px solid var(--navy);padding:0 22px;position:sticky;top:0;z-index:30;}
+  .tab{padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;color:#666;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;}
+  .tab[data-view="all"]{background:#eef4fb;}
+  .tab[data-view="img"]{background:#e7f6f3;}
+  .tab[data-view="all"].active{color:#fff;background:var(--navy);border-bottom-color:var(--navy);}
+  .tab[data-view="img"].active{color:#fff;background:var(--teal);border-bottom-color:var(--teal);}
+  #view-all.active{border-top:5px solid var(--navy);}
+  #view-img.active{border-top:5px solid var(--teal);}
+  .wrap{padding:18px 22px 60px;}
+  .view{display:none;}
+  .view.active{display:block;}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0;background:#fafbfc;padding:6px 0;border-bottom:1px solid #e3e7eb;}
+  .controls input[type=search]{padding:8px 12px;border:1px solid #ccc;border-radius:8px;font-size:14px;min-width:240px;}
+  .chip{border:1px solid var(--navy2);color:var(--navy2);background:#fff;border-radius:20px;padding:6px 13px;font-size:12.5px;cursor:pointer;user-select:none;}
+  .chip.active{background:var(--navy2);color:#fff;}
+  .filter-label{font-size:12px;font-weight:700;color:#555;margin-left:4px;padding-left:10px;border-left:1px solid #ccd2d8;}
+  .chip.cost-free{border-color:#2e7d32;color:#2e7d32;}
+  .chip.cost-free.active{background:#2e7d32;color:#fff;}
+  .chip.cost-sub{border-color:#8a5a00;color:#8a5a00;}
+  .chip.cost-sub.active{background:#8a5a00;color:#fff;}
+  .count{font-size:12.5px;color:#666;margin-left:auto;}
+  table{border-collapse:collapse;width:100%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08);font-size:12.5px;}
+  th,td{border:1px solid #e1e5ea;padding:7px 9px;vertical-align:top;text-align:left;}
+  thead th{background:var(--navy);color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;}
+  thead th:hover{background:var(--navy2);}
+  #view-img thead th{background:var(--teal);}
+  #view-img thead th:hover{background:var(--teal2);}
+  #view-img td.cat{background:#d6efe9;}
+  #view-img .controls .chip{border-color:var(--teal);color:var(--teal);}
+  #view-img .controls .chip.active{background:var(--teal);color:#fff;}
+  thead th .ar{opacity:.5;font-size:10px;}
+  tbody tr:hover{background:#f5f9ff;}
+  td.cat{background:#d9e1f2;font-weight:600;white-space:nowrap;font-size:11.5px;}
+  td.j a{color:var(--navy);font-weight:600;text-decoration:none;}
+  td.j a:hover{text-decoration:underline;}
+  td.j .abbr{display:block;color:#888;font-size:10.5px;font-style:italic;}
+  .typ{font-weight:700;color:#b8860b;}
+  .disc{text-align:center;font-weight:700;white-space:nowrap;}
+  .d-yes{background:var(--green);color:var(--greent);}
+  .d-free{background:var(--blue);color:#1c4587;}
+  .d-no{background:var(--gray);color:#777;}
+  .src{font-size:11px;white-space:nowrap;}
+  .src a{color:#2e6da4;text-decoration:none;margin-right:6px;}
+  .src a:hover{text-decoration:underline;}
+  .if-warn{background:var(--warn);color:var(--warnt);font-weight:700;}
+  .badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;}
+  .b-med{background:#e6f4ea;color:#137333;}
+  .b-pmc{background:#fef7e0;color:#a06a00;}
+  .callout{border-radius:10px;padding:16px 18px;margin:22px 0;border:1px solid #e3e7eb;background:#fff;}
+  .callout h3{margin:0 0 10px;font-size:15px;}
+  .callout.warn{border-color:#f3b0b0;background:#fff7f7;}
+  .callout.warn h3{color:var(--warnt);}
+  .callout.tip{border-color:#bcdcc4;background:#f4fbf6;}
+  .callout ul{margin:6px 0 0;padding-left:20px;}
+  .callout li{margin:4px 0;}
+  .legend{font-size:12px;color:#555;display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 0;}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid #ccc;}
+  footer{font-size:11.5px;color:#777;padding:0 22px 40px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>心臓血管外科領域 雑誌 APC・学会員割引・PubMed・IF／NEJM型「画像枠」総合一覧</h1>
+  <div class="badges">
+    <span class="ver">ver013</span>
+    <span>🔄 更新日：2026-10-11（日）</span>
+    <span>🆕 作成日：2026-06-06（土）</span>
+    <span>📚 収録：44誌＋画像枠11誌</span>
+  </div>
+  <div class="sub">ver013：②血管に EJVES Vascular Forum（原著・症例報告・技術報告／ESVS会員30%割引）を追加。APCは参考値と確認済み情報を区別して記載。／ver012：②血管に Vascular and Endovascular Surgery（SAGE・MEDLINE・購読掲載なら無料）を追加。／ver011：「無料」と「Subscriptionあり」の費用別フィルターを追加。無料＝著者負担が原則0円、Subscriptionあり＝OAを選択せず購読掲載にすれば原則APC不要／IFは原則 JCR 2024（2025年6月公表）／APCは原則 税別・定価。投稿時に要確認。為替 USD1≒¥155 目安。雑誌名/出典をクリックで公式・APC根拠ページへ。</div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-view="all">① 全雑誌 APC一覧（44誌）</button>
+  <button class="tab" data-view="img">② NEJM型「画像枠」一覧（11誌）</button>
+</div>
+
+<!-- ===================== VIEW: ALL ===================== -->
+<div class="wrap view active" id="view-all">
+  <div class="legend">
+    <span><i class="sw" style="background:#c6efce"></i>有：学会員割引あり</span>
+    <span><i class="sw" style="background:#ddebf7"></i>無料：APC無料（*=条件付）</span>
+    <span><i class="sw" style="background:#f2f2f2"></i>無：割引なし</span>
+    <span><i class="sw" style="background:#ffc7ce"></i>要注意（IF/評判）</span>
+    <span><span class="badge b-med">MEDLINE</span>正式収載</span>
+    <span><span class="badge b-pmc">PMC</span>PubMed検索可・MEDLINE非収載</span>
+  </div>
+  <div class="controls">
+    <input type="search" id="q" placeholder="🔍 雑誌名・学会・出版社で検索...">
+    <span class="chip active" data-cat="all">すべて</span>
+    <span class="chip" data-cat="①">①心胸部</span>
+    <span class="chip" data-cat="②">②血管</span>
+    <span class="chip" data-cat="③">③循環器(高IF)</span>
+    <span class="chip" data-cat="④">④日本外科系</span>
+    <span class="chip" data-cat="⑤">⑤中東/アジア</span>
+    <span class="chip" data-cat="⑥">⑥症例報告/総合</span>
+    <span class="chip" data-cat="⑦">⑦総合医学(最高峰)</span>
+    <span class="filter-label">費用別</span>
+    <span class="chip cost-free" data-cat="free">無料（著者負担0円）</span>
+    <span class="chip cost-sub" data-cat="subscription">Subscriptionあり</span>
+    <span class="chip" data-cat="disc">割引ありのみ</span>
+    <span class="count" id="count"></span>
+  </div>
+  <table id="tbl">
+    <thead><tr>
+      <th data-k="cat">分類<span class="ar">▾</span></th>
+      <th data-k="journal">雑誌名 (Journal)<span class="ar">▾</span></th>
+      <th data-k="society">学会／所有団体<span class="ar">▾</span></th>
+      <th data-k="publisher">出版社<span class="ar">▾</span></th>
+      <th data-k="oa">OA形態<span class="ar">▾</span></th>
+      <th data-k="apc">標準APC（税別・定価）<span class="ar">▾</span></th>
+      <th data-k="discount">学会員割引<span class="ar">▾</span></th>
+      <th data-k="disc">区分<span class="ar">▾</span></th>
+      <th data-k="pubmed">PubMed<span class="ar">▾</span></th>
+      <th data-k="ifv">IF<span class="ar">▾</span></th>
+      <th data-k="src">出典</th>
+    </tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+
+  <div class="callout">
+    <h3>🎯 学会員割引のある雑誌（割引の大きい順）</h3>
+    <ul>
+      <li>💰💰💰 <b>Surgery Today（2027〜）</b>／日本外科学会：¥560,000 → <b>¥60,000</b>（約 -89%）</li>
+      <li>💰💰 <b>Surgical Case Reports</b>／日本外科学会：¥95,000 → <b>¥30,000</b>（約 -68%・差額¥65,000）</li>
+      <li>💰💰 <b>Ann Thorac Surg Short Reports</b>／STS：-50%（→約 $488）　・　💰💰 <b>EJVES</b>／ESVS：-30%（→約 $2,800）</li>
+      <li>💰 <b>JVS</b>／SVS：-20%　・　<b>JVS-CIT</b>／SVS：-20%　・　<b>ICVTS</b>／EACTS・ESTS：-20%（→$2,900）</li>
+      <li>💰 <b>European Heart Journal</b>／ESC：-20%　・　<b>Heart, Lung &amp; Circulation</b>／ANZSCTS・CSANZ：-20%　・　<b>JTCVS Open/Techniques</b>／AATS：-20%</li>
+    </ul>
+  </div>
+  <div class="callout">
+    <h3>🆓 著者負担ゼロで投稿できる枠</h3>
+    <ul>
+      <li><b>Annals of Vascular Diseases</b>（JSVS系）：規定頁内なら無料・PubMed(PMC)</li>
+      <li><b>Journal of Chest Surgery</b>（韓国胸部心臓血管外科学会）：投稿料・APCなし・PubMed(PMC)</li>
+      <li><b>Vascular Specialist International</b>（韓国血管外科学会）：投稿料・掲載料なし・PubMed(PMC)</li>
+      <li><b>Indian Heart Journal</b>（CSI負担）：著者$0かつ <b>MEDLINE収載</b>　・　<b>Egyptian Heart Journal</b>（国費）：無料・PMCのみ</li>
+      <li><b>NEJM「Images in Clinical Medicine」</b>：投稿無料・MEDLINE・IF78.5だが <b>週2回／年約100枠の超狭き門</b></li>
+    </ul>
+  </div>
+  <div class="callout tip">
+    <h3>🆕 ver013 追加：EJVES Vascular Forum ― 2026-10-11確認</h3>
+    <ul>
+      <li><b>対象：</b>動脈・静脈・リンパ疾患の原著、症例報告、技術報告など。EJVES本誌とは別誌です。</li>
+      <li><b>費用：</b>採択後にAPCが必要な完全OA誌。<a href="https://doaj.org/toc/2666-688X" target="_blank" rel="noopener">DOAJ掲載額</a>は最大USD 2,250ですが、<b>現行の出版社定価は未確認</b>です。投稿時に<a href="https://www.sciencedirect.com/journal/ejves-vascular-forum/publish/open-access-options" target="_blank" rel="noopener">公式APC案内</a>で確認してください。</li>
+      <li><b>学会員割引：</b>ESVS会員は30%割引。仮に定価がUSD 2,250なら割引後USD 1,575です（条件付き試算）。</li>
+      <li><b>IF：</b>1.8（2024年、<a href="https://esvs.org/ejves-vascular-forum/" target="_blank" rel="noopener">ESVS公式掲載値</a>）。2025年の値としては扱っていません。</li>
+      <li><b>PubMed：</b>PubMedで検索可能・PMC収載。ただし<a href="https://www.ncbi.nlm.nih.gov/nlmcatalog/101766732" target="_blank" rel="noopener">NLM Catalog</a>ではMEDLINE非収載です。</li>
+    </ul>
+  </div>
+
+  <div class="callout tip">
+    <h3>🆕 ver012 追加：Vascular and Endovascular Surgery（VES / SAGE）― 2026-09-20 公式確認</h3>
+    <ul>
+      <li><b>費用：</b>公式規定に「投稿・掲載に費用なし」と明記。OAを選ばず購読掲載にすれば<b>著者負担0円</b>。オンラインのカラー図は無料、印刷版カラーのみ1枚目$800＋以降$200。</li>
+      <li><b>OA（任意）：</b>Sage Choice。VES個別の定価は公式ページに記載なく<b>正確額は未確認</b>（Sage標準はUSD 3,000–4,000）。学会員割引はなく、減免は所属機関のSage OA協定のみ。</li>
+      <li><b>収載・指標：</b><b>MEDLINE収載</b>・IF 0.7（5年IF 0.8）。無料でMEDLINEに載る血管系Case Report枠としては実用的だが、IFは領域内で下位。</li>
+      <li><b>枠：</b>原著・Case Report・Clinical Controversy（3,000語）・Letter（700語／文献5）・Endovascular Techniques。Case Reportの語数上限は規定に明記なし、抄録は構造化300語。査読はsingle-anonymized。</li>
+      <li><b>⚠ 忖度なし：</b>購読掲載は非OAのため読者到達と被引用は伸びにくい。<b>EJVES（ESVS・IF6.8）とは全くの別誌</b>で、業績目録上の混同に注意。無料・OA・血管の条件ならAVD／Vascular Specialist Internationalが競合（ただし両誌はMEDLINE非収載）。</li>
+    </ul>
+  </div>
+  <div class="callout tip">
+    <h3>新たに追加した実用候補（2026-09-14確認）</h3>
+    <ul>
+      <li><b>General Thoracic and Cardiovascular Surgery Cases（GTCC）：</b>心臓・胸部外科の症例報告専用誌。2026年10月1日から新投稿システムへ移行し、責任著者が日本胸部外科学会会員の場合はAPC 60,000円（税込）を予定。</li>
+      <li><b>Journal of Chest Surgery：</b>心臓・大動脈を含む胸部心臓血管外科誌。完全OAながら投稿料・APCなし。Case Reportは本文1,500語、抄録150語、図表3点、文献10編。</li>
+      <li><b>Vascular Specialist International：</b>血管症例報告・Technical Note・Image of Vascular Surgeryに対応し、投稿料・掲載料なし。PMC収載。</li>
+      <li><b>Annals of Vascular Surgery - Brief Reports and Innovations：</b>血管症例・短報・技術向けのOA姉妹誌。APCは最大USD 1,560。PubMedは選択収載でMEDLINE非収載。</li>
+      <li><b>The Journal of Cardiovascular Surgery：</b>MEDLINE・SCIE、IF 1.5。購読掲載は無料、OA選択時のみEUR 1,800。現行規定には通常のCase Report枠が明記されていないため、原著・Review向け。</li>
+    </ul>
+  </div>
+  <div class="callout tip">
+    <h3>📌 今回の再投稿候補：Annals of Vascular Diseases（AVD）Case Report</h3>
+    <ul>
+      <li><b>領域適合性：</b>血管・血管内治療を中心とする学会誌。医原性外腸骨動脈損傷と外科的再建は対象領域に合致。</li>
+      <li><b>現行上限：</b>本文2,400語（印刷3頁）／非構造化抄録100語／キーワード3個／文献10編／図表合計3点。</li>
+      <li><b>費用：</b>投稿料なし。規定頁内はAPCなし。超過は1頁あたり30,000円。採択論文はCC BY 4.0で公開。</li>
+      <li><b>投稿前の重点修正：</b>端側吻合を選択した根拠、初回修復からバイパスへ移行した判断、グラフト長不足から得られる教訓を明確化し、外腸骨動脈再建に直接関係しない文献を差し替える。</li>
+      <li><b>位置づけ：</b>術式自体の新規性ではなく、婦人科手術中の医原性血管損傷に対する救済判断と再建上のpitfallを教育的価値として示す。</li>
+    </ul>
+  </div>
+  <div class="callout warn">
+    <h3>⚠️ Journal of Surgical Case Reports（JSCR / Oxford UP）― 忖度なし</h3>
+    <ul>
+      <li><b>APC高騰</b>：第三者サイトの「約$970」は古い値。公式は現行 <b>USD 3,625</b>（税別）。</li>
+      <li><b>割引導線なし</b>：学会員割引対象外／日本はLMIC対象外／<b>Read &amp; Publish 対象外と公式明記</b>。実質フル$3,625＋税。</li>
+      <li><b>非MEDLINE・低IF</b>（PMCのみ・IF0.5/ESCI）。OUP正規誌でpredatoryではないが費用対効果は低め。症例報告ならAVD（無料）等が割安。</li>
+    </ul>
+  </div>
+  <div class="callout warn">
+    <h3>⚠️ Cureus ― 忖度なし</h3>
+    <ul>
+      <li><b>IF喪失</b>：2025/10/27 Web of Science除外（最終IF1.3、今後なし）。WoS/IF重視の審査で明確なマイナス。</li>
+      <li><b>撤回多発</b>（約125本・撤回通知約200件）・<b>paper mill疑義</b>（2024/11チャネル6件閉鎖）・査読が速く粗いとの批判。SIQは業績指標にならない。</li>
+      <li>『無料』は条件付き（整形不良時 Preferred Editing 必須／$0は採択の約1/3）。Springer Nature実在誌だが『低prestige・質に疑義のメガジャーナル』。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== VIEW: IMAGES ===================== -->
+<div class="wrap view" id="view-img">
+  <div class="callout tip">
+    <h3>🖼 NEJM「Images in Clinical Medicine」に相当する「画像1枚＋短文」枠</h3>
+    <ul>
+      <li><b>無料＋MEDLINE＋PMID</b> を狙うなら外科系は <b>EJCTS「Images in Cardio-Thoracic Surgery」</b>（図1＋凡例50語＝NEJM最類似）、<b>JTCVS「Cardiothoracic Imaging」</b>、血管は <b>EJVES「Coup d'œil」</b>（IF6.8）。いずれも購読ルートなら著者負担0。</li>
+      <li><b>明朗会計の有料枠</b>：<b>Circulation Journal「Images in Cardiovascular Medicine」</b>¥45,000、<b>JVS-CIT「Vascular Images」</b>$650（SVS会員$520）。</li>
+      <li><b>最高峰</b>：<b>EHJ「CardioVascular Flashlight」</b>（IF35.7・購読なら無料・PMID付与）＝NEJM Imagesの循環器版。</li>
+      <li>⚠ IFは「雑誌」に付く値で画像個別の価値ではない。Hybrid誌は「OAを選ばなければ著者負担0」。<b>JACC: CV Imaging の iPIX は連続画像（単一画像枠ではない）</b>点に注意。</li>
+      <li><b>画像枠なし</b>：JACC本誌・ICVTS・GTCS・Annals of Vascular Surgery。Circulation本誌は現在ECG Challenge等に変化。</li>
+    </ul>
+  </div>
+  <div class="controls">
+    <input type="search" id="qi" placeholder="🔍 雑誌名・枠名で検索...">
+    <span class="chip active" data-fld="all">すべて</span>
+    <span class="chip" data-fld="心胸部">心胸部</span>
+    <span class="chip" data-fld="血管">血管</span>
+    <span class="chip" data-fld="循環器">循環器</span>
+    <span class="count" id="counti"></span>
+  </div>
+  <table id="tbli">
+    <thead><tr>
+      <th data-k="field">領域</th>
+      <th data-k="journal">雑誌</th>
+      <th data-k="type">枠の名称</th>
+      <th data-k="format">形式（語数/図/著者/文献）</th>
+      <th data-k="fee">料金</th>
+      <th data-k="member">学会員割引</th>
+      <th data-k="pubmed">PubMed</th>
+      <th data-k="ifv">IF</th>
+      <th data-k="src">出典</th>
+    </tr></thead>
+    <tbody id="bodyi"></tbody>
+  </table>
+</div>
+
+<footer>
+  出典：各誌出版社の公式 Open Access/Author/Charges/Instructions ページ、学会サイト、NLM Catalog、Clarivate JCR/Web of Science、J-STAGE、Retraction Watch、Journalology を基に、雑誌ごとに調査＋独立検証の2段階でクロスチェック（EJVES Vascular Forumは2026-10-11にESVS・NLM情報を確認、APCはDOAJ参考値で現行出版社定価は未確認。Vascular and Endovascular Surgeryは2026-09-20確認、AVDおよびver010追加5誌は2026-09-14確認、その他は2026-06-06時点）。「無料」は著者負担が原則0円の誌（無料*は条件付き）、「Subscriptionあり」はOAを選択せず購読掲載にすれば原則APC不要の誌。ページ超過・カラー印刷・英文校閲等は別料金となる場合があるため投稿時に最終確認を。
+</footer>
+
+<script>
+const DATA = [
+ ["①","The Journal of Thoracic and Cardiovascular Surgery","J Thorac Cardiovasc Surg","AATS","Elsevier","Hybrid","≈USD 4,500（個別価格・要確認）","AATS会員で個別減額（本誌は明示%なし）","yes","MEDLINE(core)","4.4","SCIE","https://www.jtcvs.org/","https://www.sciencedirect.com/journal/the-journal-of-thoracic-and-cardiovascular-surgery/publish/open-access-options",""],
+ ["①","JTCVS Open","JTCVS Open","AATS","Elsevier","Gold OA","USD 2,431","AATS 約20%off（→約$1,945）","yes","PMC","1.9","SCIE","https://www.jtcvsopen.org/","https://www.sciencedirect.com/journal/jtcvs-open/publish/open-access-options",""],
+ ["①","JTCVS Techniques","JTCVS Tech","AATS","Elsevier","Gold OA","USD 2,553","AATS 約20%off（brief comm $983→$656）","yes","PMC","≈1.9","ESCI","https://www.jtcvstechniques.org/","https://www.sciencedirect.com/journal/jtcvs-techniques/publish/open-access-options",""],
+ ["①","The Annals of Thoracic Surgery","Ann Thorac Surg","STS","Elsevier","Hybrid","USD 3,980","本誌は割引なし（会員=無料購読のみ）","no","MEDLINE(core)","3.9","SCIE","https://www.annalsthoracicsurgery.org/","https://www.sciencedirect.com/journal/the-annals-of-thoracic-surgery/publish/open-access-options","50%割引は姉妹誌Short Reportsのみ"],
+ ["①","Annals of Thoracic Surgery Short Reports","Ann Thorac Surg Short Rep","STS","Elsevier","Gold OA","USD 975","STS 50%off（→約$488）★最安","yes","PMC","未取得(新誌)","-","https://www.annalsthoracicsurgeryshortrep.org/","https://www.elsevier.com/journals/annals-of-thoracic-surgery-short-reports/2772-9931/open-access-information",""],
+ ["①","European Journal of Cardio-Thoracic Surgery","Eur J Cardiothorac Surg","EACTS","Oxford UP","Hybrid","GBP 2,264 / USD 3,396 / EUR 2,759（途上国GBP965・最貧国無料）","割引なし（EACTS割引はICVTSのみ／本誌は対象外）","no","MEDLINE","3.0","SCIE","https://academic.oup.com/ejcts","https://academic.oup.com/ejcts/pages/Charges","⚠EJCTSとICVTSの割引を混同注意"],
+ ["①","Interdisciplinary CardioVascular and Thoracic Surgery","Interdiscip Cardiovasc Thorac Surg","EACTS","Oxford UP","Gold OA","USD 3,625","EACTS/ESTS 20%off（→ちょうど$2,900）","yes","MEDLINE","1.3(新題)/2.1(旧題)","SCIE","https://academic.oup.com/icvts","https://academic.oup.com/icvts/pages/submission_online","旧Interactive CVTS"],
+ ["①","General Thoracic and Cardiovascular Surgery","Gen Thorac Cardiovasc Surg","JATS/JSCVS他","Springer","Hybrid","USD 3,890 / EUR 2,990 / GBP 2,590","本誌は割引なし（割引は姉妹誌GTCS Casesのみ）","no","MEDLINE","1.3","SCIE","https://link.springer.com/journal/11748","https://link.springer.com/journal/11748/how-to-publish-with-us",""],
+ ["①","Seminars in Thoracic and Cardiovascular Surgery","Semin Thorac Cardiovasc Surg","AATS","Elsevier","Hybrid","USD 3,430","定額割引なし（個別価格でAATS考慮）","no","MEDLINE","2.5","SCIE","https://www.semthorcardiovascsurg.com/","https://www.sciencedirect.com/journal/seminars-in-thoracic-and-cardiovascular-surgery/publish/open-access-options",""],
+ ["①","Journal of Cardiac Surgery","J Card Surg","ケベック心胸部外科医会と提携","Wiley","Gold OA","USD 2,700 / EUR 2,340 / GBP 1,990","割引なし（国別waiverのみ）","no","MEDLINE","1.3","SCIE","https://onlinelibrary.wiley.com/journal/15408191","https://onlinelibrary.wiley.com/page/journal/15408191/homepage/open-access",""],
+ ["①","Journal of Cardiothoracic Surgery","J Cardiothorac Surg","なし（商業誌）","BMC","Gold OA","USD 2,990 / EUR 2,490 / GBP 2,190","割引なし（機関割引のみ）","no","MEDLINE","1.5","SCIE","https://cardiothoracicsurgery.biomedcentral.com/","https://cardiothoracicsurgery.biomedcentral.com/submission-guidelines/fees-and-funding",""],
+ ["①","Journal of Chest Surgery","J Chest Surg","KTCVS／TSTS","Korean Society for Thoracic and Cardiovascular Surgery","Diamond OA (CC BY-NC 4.0)","無料（投稿料・APCなし）","N/A（全員無料）","free","PMC／PubMed検索可","未取得","-","https://www.jchestsurg.org/","https://www.jchestsurg.org/content/authors/instructions_for_authors.html","2026/7改訂。Case Reportは本文1,500語、抄録150語、図表3点、文献10編。MEDLINE非収載"],
+ ["①","The Journal of Cardiovascular Surgery","J Cardiovasc Surg (Torino)","なし（国際専門誌）","Minerva Medica","Hybrid","購読掲載は無料／OA EUR 1,800（Letter EUR 1,500）＋税","割引なし（確認できず）","no","MEDLINE","1.5","SCIE","https://www.minervamedica.it/en/journals/cardiovascular-surgery/","https://www.minervamedica.it/en/journals/cardiovascular-surgery/publishing_options.php","心臓・血管外科を対象。現行規定に通常のCase Report枠は明記なし。原著・Review・Cardiovascular Visuals向け"],
+ ["①","Innovations: Technology and Techniques in CTV Surgery","Innovations (Phila)","ISMICS","SAGE","Hybrid","≈USD 3,000–4,000（Sage Choice・正確額未確認）","割引なし（会員=無料購読のみ）","no","MEDLINE","1.6","ESCI","https://journals.sagepub.com/home/inv","https://us.sagepub.com/en-us/nam/hybrid-open-access-sage-choice",""],
+ ["①","Asian Cardiovascular and Thoracic Annals","Asian Cardiovasc Thorac Ann","ASCVTS","SAGE","Hybrid","≈USD 3,000–4,000（正確額未確認）／購読は無料","割引なし","no","MEDLINE","0.6","ESCI","https://journals.sagepub.com/home/aan","https://us.sagepub.com/en-us/nam/hybrid-open-access-sage-choice",""],
+ ["①","Annals of Cardiothoracic Surgery","Ann Cardiothorac Surg","なし（商業誌）","AME Publishing","Gold OA","USD 2,500（招待は無料）","割引なし","no","PMC","3.1","SCIE","https://www.annalscts.com/","https://www.annalscts.com/pages/view/article-processing-charge",""],
+ ["①","Journal of Thoracic Disease","J Thorac Dis","なし（商業誌）","AME Publishing","Gold OA","USD 1,900（2025/9更新・2026/12末まで）。招待 editorial/commentary/review は無料","割引なし（学会なし）","no","PMC","1.9","SCIE","https://jtd.amegroups.org/","https://jtd.amegroups.org/pages/view/article-processing-charges","AME誌。胸部/呼吸器中心(心臓も可)。COPE加盟・SCIE/Scopus/PMC収載でpredatoryではないが特集号/guest-editor主導。MEDLINE非収載・IF1.9"],
+ ["①","The Thoracic and Cardiovascular Surgeon","Thorac Cardiovasc Surg","DGTHG／SGHC他","Thieme","Hybrid","EUR 3,390 / USD 3,620（小児枠 EUR 1,500）","会員減額あり（本誌は額非公表）。小児枠 EUR1,500→1,000","yes","MEDLINE","1.4","SCIE","https://www.thieme-connect.com/products/ejournals/journal/10.1055/s-00000040","https://lp.thieme.de/journals/the-thoracic-and-cardiovascular-surgeon/0171-6425","症例報告は姉妹誌ThCVS Reportsへ"],
+ ["①","Heart, Lung and Circulation","Heart Lung Circ","CSANZ／ANZSCTS","Elsevier","Hybrid","要確認（旧USD 2,500・現行はより高額の可能性）","ANZSCTS/CSANZ 20%off","yes","MEDLINE","2.2","SCIE","https://www.heartlungcirc.org/","https://www.sciencedirect.com/journal/heart-lung-and-circulation/publish/open-access-options",""],
+ ["①","Journal of Artificial Organs","J Artif Organs","JSAO（日本人工臓器学会）","Springer","Hybrid","USD 3,990 / EUR 3,090 / GBP 2,690","割引なし（会員=賞応募資格のみ）","no","MEDLINE","1.3","SCIE","https://link.springer.com/journal/10047","https://link.springer.com/journal/10047/how-to-publish-with-us",""],
+
+ ["②","European Journal of Vascular and Endovascular Surgery","Eur J Vasc Endovasc Surg","ESVS","Elsevier","Hybrid","USD 4,000","ESVS 30%off（→約$2,800）★割引率最大","yes","MEDLINE","6.8","SCIE","https://www.ejves.com/","https://www.sciencedirect.com/journal/european-journal-of-vascular-and-endovascular-surgery/publish/open-access-options","領域内で高IF。割引後は割安"],
+ ["②","EJVES Vascular Forum","EJVES Vasc Forum","ESVS","Elsevier","Gold OA","最大 USD 2,250（DOAJ参考値・現行定価は要確認）","ESVS会員 30%off","yes","PMC／PubMed検索可","1.8（2024）","ESVS公表値","https://www.ejvesvascularforum.com/","https://www.sciencedirect.com/journal/ejves-vascular-forum/publish/open-access-options","原著・症例報告・技術報告。動脈・静脈・リンパ疾患。EJVES本誌とは別誌。MEDLINE非収載。2026-10-11確認。"],
+ ["②","Journal of Vascular Surgery","J Vasc Surg","SVS","Elsevier","Hybrid","USD 4,010","SVS 20%off（→約$3,208）","yes","MEDLINE","3.6","SCIE","https://www.jvascsurg.org/","https://www.sciencedirect.com/journal/journal-of-vascular-surgery/publish/open-access-options",""],
+ ["②","JVS-Cases, Innovations and Techniques","J Vasc Surg Cases Innov Tech","SVS","Elsevier","Gold OA","段階制：USD 650（症例報告/技術/画像）／USD 1,250（Innovation系）","SVS 20%off（→約$520／約$1,000）","yes","PMC","0.7","ESCI","https://www.jvscit.org/","https://www.sciencedirect.com/journal/journal-of-vascular-surgery-cases-innovations-and-techniques","症例報告向け実用誌。MEDLINE非収載・低IF"],
+ ["②","Annals of Vascular Surgery","Ann Vasc Surg","VESS他（複数学会）","Elsevier","Hybrid","USD 3,180–3,560（要確認・現行3,560か）","割引なし（確認できず）","no","MEDLINE","1.6","SCIE","https://www.annalsofvascularsurgery.com/","https://www.sciencedirect.com/journal/annals-of-vascular-surgery/publish/open-access-options",""],
+ ["②","Annals of Vascular Surgery - Brief Reports and Innovations","Ann Vasc Surg Brief Rep Innov","なし（Annals of Vascular Surgery姉妹誌）","Elsevier","Gold OA","最大 USD 1,560（要投稿時確認）","waiver制度あり（適用は個別確認）","no","PubMed選択収載（MEDLINE非収載）","未取得","-","https://www.sciencedirect.com/journal/annals-of-vascular-surgery-brief-reports-and-innovations","https://doaj.org/toc/2772-6878","2021年創刊。血管症例報告・短報・技術向け。PubMedはPMC寄託論文などの選択収載"],
+ ["②","Vascular Specialist International","Vasc Specialist Int","Korean Society for Vascular Surgery","Korean Society for Vascular Surgery","Diamond OA","無料（投稿料・掲載料なし）","N/A（全員無料）","free","PMC／PubMed検索可","未取得","-","https://www.vsijournal.org/","https://www.vsijournal.org/content/contributors/instructions_for_authors.html","Case Reportは本文3,000語、抄録150語、文献20編、図表7点。Technical Note・画像枠もあり。MEDLINE非収載"],
+ ["②","Journal of Endovascular Therapy","J Endovasc Ther","ISEVS","SAGE","Hybrid","USD 4,710（2026）","割引なし","no","MEDLINE","1.5","SCIE","https://journals.sagepub.com/home/jet","https://us.sagepub.com/en-us/nam/hybrid-open-access-sage-choice","カラー印刷別途$800〜"],
+ ["②","Vascular and Endovascular Surgery","Vasc Endovascular Surg","なし（商業誌）","SAGE","Hybrid","購読掲載は無料（投稿料・掲載料なし）／OAはSage Choice ≈USD 3,000–4,000（正確額未確認）","割引なし（所属機関のSage OA協定のみ）","no","MEDLINE","0.7","SCIE","https://journals.sagepub.com/home/ves","https://journals.sagepub.com/author-instructions/ves","2026/9/20公式確認。原著に加えCase Reportを受理（語数上限の明記なし・構造化抄録300語）。Endovascular Techniques枠あり。オンラインカラー無料／印刷カラーは1枚目$800＋以降$200。5年IF 0.8。⚠EJVES（ESVS・IF6.8）とは別誌"],
+ ["②","Annals of Vascular Diseases","Ann Vasc Dis","JSVS／JCA／JSP（ASVS／Asian Venous Forum公式誌）","ECAVD／J-STAGE","Full OA (CC BY 4.0)","投稿料なし。規定頁内APC無料（Case Report：3頁・2,400語以内）／超過¥30,000/頁","N/A（規定頁内は全員無料）","free","PMC／PubMed検索可","0.6","ESCI","https://avd-journal.com/","https://avd-journal.com/authors/author-instructions/","2026/5/21改訂規定：Case Reportは抄録100語、キーワード3、文献10、図表合計3。教育的価値とunique insightが必要"],
+
+ ["③","Circulation","Circulation","AHA","Wolters Kluwer","Hybrid","USD 4,320（CC BY-NC-ND）／USD 5,400（CC BY）","現行ページで会員割引確認できず（旧20%は本誌非掲載）","no","MEDLINE(core)","38.6","SCIE","https://www.ahajournals.org/journal/circ","https://www.ahajournals.org/open-access-information","日本のCirculation Journalと別誌"],
+ ["③","European Heart Journal","Eur Heart J","ESC","Oxford UP","Hybrid","定額非公表（計算機式・推定GBP4,000超）","ESC Professional 20%off","yes","MEDLINE","35.7","SCIE","https://academic.oup.com/eurheartj","https://academic.oup.com/eurheartj/pages/General_Instructions",""],
+ ["③","Journal of the American College of Cardiology","J Am Coll Cardiol","ACC","Elsevier","Hybrid","USD 7,525","本誌割引なし（姉妹OA誌のみ割引）","no","MEDLINE","22.3","SCIE","https://www.jacc.org/journal/jacc","https://www.sciencedirect.com/journal/journal-of-the-american-college-of-cardiology/publish/open-access-options",""],
+ ["③","Circulation Journal","Circ J","JCS（日本循環器学会）","J-STAGE","Gold OA","原著 ¥90,000(国外)/¥99,000(国内・税込)；短報 ¥45,000/¥49,500；招待 ¥0","割引なし（請求先で差・会員割引なし）","no","MEDLINE","3.7","SCIE","https://www.jstage.jst.go.jp/browse/circj","https://www.j-circ.or.jp/english/cj/Instructions_CJ.pdf",""],
+
+ ["④","Surgery Today","Surg Today","JSS（日本外科学会）","Springer→J-STAGE","Hybrid→2027.1完全OA","現行 USD 3,790；【2027〜】会員 ¥60,000／非会員 ¥560,000","会員割引 約9倍（2027〜・差額50万円）★絶対額最大。現行は割引なし","yes","MEDLINE","1.6","SCIE","https://link.springer.com/journal/595","https://www.jssoc.or.jp/modules/journal/index.php?content_id=92","2026/5/15で旧モデル投稿終了、6/15からOAモデル"],
+ ["④","Journal of Atherosclerosis and Thrombosis","J Atheroscler Thromb","JAS（日本動脈硬化学会）","J-STAGE","Gold OA","¥90,000（2025.4〜。旧¥70,000）","割引なし（非会員も同額）","no","MEDLINE","2.8","SCIE","https://www.j-athero.org/jp/jat/","https://www.j-athero.org/jat/jat/instructions.pdf",""],
+
+ ["⑤","The Egyptian Heart Journal","Egypt Heart J","エジプト心臓病学会","SpringerOpen","フルOA（国費負担）","実質無料（APCはエジプト国協定 EKB/STDF が全額負担）","N/A（全員無料のため割引概念なし）","free","PMC","1.4","ESCI","https://tehj.springeropen.com/","https://tehj.springeropen.com/submission-guidelines/fees-and-funding","協定継続が前提・MEDLINE非収載"],
+ ["⑤","Indian Heart Journal","Indian Heart J","CSI（インド心臓病学会）","Elsevier","フルOA（学会負担）","定価 USD 360 だが CSI が全額負担 → 著者 $0","N/A（会員/非会員とも$0）","free","MEDLINE","1.8","ESCI","https://www.sciencedirect.com/journal/indian-heart-journal","https://www.sciencedirect.com/journal/indian-heart-journal/publish/open-access-options","無料でMEDLINE収載の実用枠"],
+
+ ["⑥","Journal of Surgical Case Reports","J Surg Case Rep","なし（OUP+JSCR Publishing Ltd）","Oxford UP","Gold OA","USD 3,625（2025/26・税別）。※旧$970は古い値","日本人著者に実質割引なし（学会なし／LMIC対象外／R&P対象外）","no","PMC","0.5","ESCI","https://academic.oup.com/jscr","https://academic.oup.com/jscr/pages/charges","OUP正規誌だがAPC高騰・低IF・MEDLINE非収載に注意"],
+ ["⑥","Oxford Medical Case Reports","Oxf Med Case Reports","なし（OUP・MSF提携）","Oxford UP","Gold OA","USD 3,625（2026・税別）。※旧$1,049は古い値","日本人著者に実質割引なし（学会なし／LMIC対象外／R&P要確認）","no","PMC","0.4","ESCI","https://academic.oup.com/omcr","https://academic.oup.com/omcr/pages/Charges","OUP正規誌だが総合症例報告でIF0.4と低い。JSCR(同OUP)・BMJ Case Reportsと別物。APC高額・MEDLINE非収載"],
+ ["⑥","General Thoracic and Cardiovascular Surgery Cases","Gen Thorac Cardiovasc Surg Cases","JATS／JACS／JSCVS／JES","日本胸部外科学会（2026/10から新システム）","Gold OA","2026/10新規投稿：非会員額未公表／JATS会員（責任著者）¥60,000税込（予定）","有：責任著者がJATS会員の場合 ¥60,000税込（予定）","yes","PMC／PubMed検索可","未取得","-","https://www.jpats.org/journal/gtcc/","https://www.jpats.org/journal/gtcc/","2022年創刊の心臓・胸部外科症例報告誌。2026年9月は新規投稿停止、10月1日に新システム開始予定。MEDLINE非収載"],
+ ["⑥","Surgical Case Reports","Surg Case Rep","日本外科学会（JSS）","JSS自主運営(J-STAGE・旧SpringerOpen)","Gold OA","非会員 ¥95,000（税抜）","JSS会員 ¥30,000（税抜）＝約68%off（差額¥65,000）","yes","PMC","0.7","ESCI","https://www.jstage.jst.go.jp/browse/scrj/-char/en","https://www.jssoc.or.jp//modules/journal/index.php?content_id=80","★日本外科学会の症例報告誌(第2公式誌)。2025年からJSS自主運営・J-STAGE。会員割引大・筆頭/責任著者が会員要。JSCR(OUP)/Int J Surg Case Rep(Elsevier)と別物"],
+ ["⑥","Cureus Journal of Medical Science","Cureus","なし（学会非所属）","Springer Nature","Gold OA(megajournal)","標準APCなし＝原則無料。整形不良時のみ Preferred Editing 課金（USD 0–300〔2026/12末〕／別ページ約$385）。無料は採択の約1/3","N/A（学会なし）","free*","PMC","失効(2025.10 WoS除外・最終1.3)","WoS除外","https://www.cureus.com/","https://www.cureusjournals.com/faqs","⚠要注意：IF喪失・撤回多発・paper mill疑義。詳細は下部ボックス"],
+
+ ["⑦","New England Journal of Medicine — Images in Clinical Medicine","N Engl J Med","MMS（米マサチューセッツ医師会）","Massachusetts Medical Society","購読制（研究論文は6か月後に無料公開）","Images投稿は無料（投稿料・掲載料・APCなし。カラー/補足も無料）。※funder用Gold OAは別途 約USD 9,900–10,000","N/A（Images無料のため）","free","MEDLINE(core)","78.5","SCIE","https://www.nejm.org/","https://www.nejm.org/about-nejm/author-center","★超狭き門：週2回・年約100枠。症例報告ではない短報（凡例≤150語・文献なし・著者最大2名）。患者同意/photo release必須・著作権はMMSへ譲渡。IFは雑誌に付く値で画像個別の価値ではない"],
+];
+const IMAGES = [
+ ["心胸部","European Journal of Cardio-Thoracic Surgery (EJCTS)","Images in Cardio-Thoracic Surgery","図1枚＋凡例50語のみ（NEJM最類似）／文献なし","購読ルートなら無料／OA選択時のみ short-item APC EUR 1,719","EACTS会員 EUR 1,203（短報枠）","MEDLINE・PMID付与","3.0","https://academic.oup.com/ejcts","https://academic.oup.com/ejcts/pages/manuscript_instructions","図1枚＋50語＝NEJM形式に最も近い。購読なら無料"],
+ ["心胸部","The Journal of Thoracic and Cardiovascular Surgery (JTCVS)","Cardiothoracic Imaging","300語／図表合計 最大4／文献5","購読なら無料／OAは任意（個別価格）","本誌は明示割引なし（AATS個別）","MEDLINE・PMID付与","4.4","https://www.jtcvs.org/","https://www.jtcvs.org/content/authorinfo","外科系で高IF。購読なら無料"],
+ ["心胸部","Annals of Thoracic Surgery Short Reports（旧 ATS の画像枠）","Images in Cardiothoracic Surgery","姉妹誌ATS Short Reports（フルOA）に集約／全体2,500語以内","フルOA：USD 975","STS会員 50%off（→約$488）","PMC（新誌・MEDLINEは未）","親誌 3.9","https://www.annalsthoracicsurgeryshortrep.org/","https://www.elsevier.com/journals/annals-of-thoracic-surgery-short-reports/2772-9931/open-access-information","STS会員割引が大きい。MEDLINEは新誌のため未収載"],
+ ["心胸部","Heart, Lung and Circulation","Images","写真1〜数枚＋説明 ≤500語","購読なら無料／OAは任意","OA APCに ANZSCTS/CSANZ 20%off","MEDLINE","2.2","https://www.heartlungcirc.org/","https://www.sciencedirect.com/journal/heart-lung-and-circulation/publish/open-access-options","ブランド名なしの素朴な『Images』枠"],
+ ["血管","European Journal of Vascular and Endovascular Surgery (EJVES)","Coup d'œil（ひと目）","100語／図1枚(2パネル)／1頁","購読なら無料／OAは任意","OA APCに ESVS 30%off","MEDLINE・PMID付与","6.8","https://www.ejves.com/","https://www.ejves.com/content/authorinfo","血管で最有力。高IF＆購読なら無料"],
+ ["血管","JVS-Cases, Innovations and Techniques (JVS-CIT)","Vascular Images","≤350語／最大4図／文献2／著者上限","フルOA：USD 650（症例報告と同tier）","SVS会員 20%off（→約$520）","PMCのみ（MEDLINE非収載）","0.6–0.7","https://www.jvscit.org/","https://www.jvscit.org/","低額だがMEDLINE非収載・低IF"],
+ ["循環器","European Heart Journal (EHJ)","CardioVascular Flashlight","250語／図1／著者3／文献5","購読なら無料／OA選択時のみAPC","OA APCに ESC会員 20%off","MEDLINE・PMID付与","35.7","https://academic.oup.com/eurheartj","https://academic.oup.com/eurheartj/pages/general_instructions","★NEJM Imagesの循環器版・最高峰。購読なら無料"],
+ ["循環器","Circulation Journal（日本循環器学会）","Images in Cardiovascular Medicine","≤400語／図1／文献3","¥45,000（国外）／¥49,500（国内・税込）","なし（請求先で差のみ）","MEDLINE・PMID付与","3.7","https://www.jstage.jst.go.jp/browse/circj","https://www.j-circ.or.jp/english/cj/Instructions_CJ.pdf","日本の学会誌・明朗会計。症例報告は不可"],
+ ["循環器","Circulation: Cardiovascular Imaging","Cardiovascular Images","≤1000語／2–3図／文献≤4","購読なら無料／OAのみAPC","（AHA：本誌会員割引は不明確）","MEDLINE","7.0","https://www.ahajournals.org/journal/circimaging","https://www.ahajournals.org/open-access-information","画像専門誌。やや長め可"],
+ ["循環器","European Heart Journal - Cardiovascular Imaging (EHJ-CVI)","Image Focus","250語／図1／文献なし／著者最大5","購読なら無料／OAのみAPC","OA APCに ESC会員 20%off","MEDLINE","6.6","https://academic.oup.com/ehjcimaging","https://academic.oup.com/ehjcimaging/pages/General_Instructions","cineloop可。EHJ本誌のFlashlightとは別物"],
+ ["循環器","JACC: Cardiovascular Imaging","iPIX (Imaging Vignette)","※10–20枚の連続画像（単一画像枠ではない）","購読なら無料／OAのみAPC","（ACC：本誌会員割引は不明確）","MEDLINE","15.2","https://www.jacc.org/journal/jacc-cardiovascular-imaging","https://www.jacc.org/","公式に『Images in Medicine代替ではない』と明記"]
+];
+
+// ---------- ALL view ----------
+const KEYS=["cat","journal","abbr","society","publisher","oa","apc","discount","disc","pubmed","ifv","iftier","url","apcurl","note"];
+const body=document.getElementById('body'), q=document.getElementById('q'), countEl=document.getElementById('count');
+let filterCat='all', sortKey=null, sortDir=1;
+function discCell(d){if(d==='yes')return['有','disc d-yes'];if(d==='free')return['無料','disc d-free'];if(d==='free*')return['無料*','disc d-free'];return['無','disc d-no'];}
+function pubBadge(p){return p.startsWith('MEDLINE')?'<span class="badge b-med">MEDLINE</span>'+(p.includes('core')?'<small>(core)</small>':''):'<span class="badge b-pmc">PMC</span>';}
+function renderAll(){
+  const term=q.value.trim().toLowerCase();
+  let rows=DATA.map(r=>{const o={};KEYS.forEach((k,i)=>o[k]=r[i]);return o;});
+  rows=rows.filter(r=>{
+    if(filterCat==='disc'){if(r.disc!=='yes')return false;}
+    else if(filterCat==='free'){if(r.disc!=='free'&&r.disc!=='free*')return false;}
+    else if(filterCat==='subscription'){if(!r.oa.includes('Hybrid')&&!r.oa.includes('購読制'))return false;}
+    else if(filterCat!=='all'){if(r.cat!==filterCat)return false;}
+    if(term){const b=(r.journal+' '+r.abbr+' '+r.society+' '+r.publisher+' '+r.note).toLowerCase();if(!b.includes(term))return false;}
+    return true;
+  });
+  if(sortKey){rows.sort((a,b)=>{let x=a[sortKey],y=b[sortKey];if(sortKey==='ifv'){const fx=parseFloat(x),fy=parseFloat(y);x=isNaN(fx)?-1:fx;y=isNaN(fy)?-1:fy;return(x-y)*sortDir;}return(''+x).localeCompare(''+y,'ja')*sortDir;});}
+  body.innerHTML=rows.map(r=>{
+    const[dl,dc]=discCell(r.disc);
+    const ifCls=(r.iftier==='WoS除外')?'if-warn':'';
+    let src='<a href="'+r.url+'" target="_blank" rel="noopener">公式</a>'+(r.apcurl?'<a href="'+r.apcurl+'" target="_blank" rel="noopener">APC</a>':'');
+    return '<tr><td class="cat">'+r.cat+'</td>'+
+      '<td class="j"><a href="'+r.url+'" target="_blank" rel="noopener">'+r.journal+'</a><span class="abbr">'+r.abbr+'</span>'+(r.note?'<div style="color:#777;font-size:10.5px;margin-top:3px">'+r.note+'</div>':'')+'</td>'+
+      '<td>'+r.society+'</td><td>'+r.publisher+'</td><td>'+r.oa+'</td><td>'+r.apc+'</td><td>'+r.discount+'</td>'+
+      '<td class="'+dc+'">'+dl+'</td><td>'+pubBadge(r.pubmed)+'</td>'+
+      '<td class="'+ifCls+'">'+r.ifv+'<br><small style="color:#888">'+r.iftier+'</small></td>'+
+      '<td class="src">'+src+'</td></tr>';
+  }).join('');
+  countEl.textContent=rows.length+' 誌';
+}
+document.querySelectorAll('#view-all .chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('#view-all .chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');filterCat=c.dataset.cat;renderAll();}));
+q.addEventListener('input',renderAll);
+document.querySelectorAll('#tbl thead th[data-k]').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortKey===k){sortDir*=-1;}else{sortKey=k;sortDir=1;}renderAll();}));
+
+// ---------- IMAGES view ----------
+const IKEYS=["field","journal","type","format","fee","member","pubmed","ifv","url","srcurl","note"];
+const bodyi=document.getElementById('bodyi'), qi=document.getElementById('qi'), counti=document.getElementById('counti');
+let fldFilter='all';
+function renderImg(){
+  const term=qi.value.trim().toLowerCase();
+  let rows=IMAGES.map(r=>{const o={};IKEYS.forEach((k,i)=>o[k]=r[i]);return o;});
+  rows=rows.filter(r=>{
+    if(fldFilter!=='all'&&r.field!==fldFilter)return false;
+    if(term){const b=(r.journal+' '+r.type+' '+r.note).toLowerCase();if(!b.includes(term))return false;}
+    return true;
+  });
+  bodyi.innerHTML=rows.map(r=>{
+    const feeFree=r.fee.indexOf('無料')>=0;
+    const pm=r.pubmed.indexOf('MEDLINE')>=0?'<span class="badge b-med">MEDLINE</span>'+(r.pubmed.indexOf('PMID')>=0?'<small>+PMID</small>':''):'<span class="badge b-pmc">PMC</span>';
+    let src='<a href="'+r.url+'" target="_blank" rel="noopener">公式</a><a href="'+r.srcurl+'" target="_blank" rel="noopener">投稿規定</a>';
+    return '<tr><td class="cat">'+r.field+'</td>'+
+      '<td class="j"><a href="'+r.url+'" target="_blank" rel="noopener">'+r.journal+'</a>'+(r.note?'<div style="color:#777;font-size:10.5px;margin-top:3px">'+r.note+'</div>':'')+'</td>'+
+      '<td class="typ">'+r.type+'</td><td>'+r.format+'</td>'+
+      '<td'+(feeFree?' class="disc d-free"':'')+'>'+r.fee+'</td>'+
+      '<td>'+r.member+'</td><td>'+pm+'</td><td>'+r.ifv+'</td>'+
+      '<td class="src">'+src+'</td></tr>';
+  }).join('');
+  counti.textContent=rows.length+' 誌';
+}
+document.querySelectorAll('#view-img .chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('#view-img .chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');fldFilter=c.dataset.fld;renderImg();}));
+qi.addEventListener('input',renderImg);
+
+// ---------- tabs ----------
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('view-'+t.dataset.view).classList.add('active');
+}));
+
+renderAll(); renderImg();
+</script>
+</body>
+</html>
